@@ -1,0 +1,9 @@
+.vscode
+
+##Type Script
+dist
+node_modules
+
+##C++
+*.exe
+*.h.gch
