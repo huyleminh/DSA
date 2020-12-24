@@ -1,7 +1,19 @@
 /**
+ *
+ * Sort.h
+ *
+ * Created by Huy Le Minh on 2020-12-24
+ *
+ * Visit my github: https://github.com/huyleminh/
+ * Contact me: leminhhuy.hcmus@gmail.com
+ *
+ *
+ * File description: Implement Sort Algorithms
+ * 
  * All sort algorithms below are used to sort an array of T type in ascending order
- * !Note: If T is not a basic type, use must implement comparision operator for it
+ * *Note: If T is not a basic type, use must implement comparision operator for it
 */
+
 
 #ifndef _SORT_H_
 #define _SORT_H_

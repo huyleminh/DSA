@@ -1,3 +1,16 @@
+/**
+ *
+ * Search.h
+ *
+ * Created by Huy Le Minh on 2020-12-24
+ *
+ * Visit my github: https://github.com/huyleminh/
+ * Contact me: leminhhuy.hcmus@gmail.com
+ *
+ *
+ * File description: Implement Search Algorithms
+*/
+
 #ifndef _SEARCH_H_
 #define _SEARCH_H_
 
