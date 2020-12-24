@@ -1,3 +1,17 @@
+/**
+ *
+ * Node.h
+ *
+ * Created by Huy Le Minh on 2020-12-24
+ *
+ * Visit my github: https://github.com/huyleminh/
+ * Contact me: leminhhuy.hcmus@gmail.com
+ *
+ *
+ * File description: Implement a Node of a Linked List
+*/
+
+
 #ifndef _NODE_H_
 #define _NODE_H_
 
@@ -18,8 +32,6 @@ public:
     Node*& next();
 
     static Node* init(const T& key);
-
-    ~Node();
 };
 
 template<class T>
@@ -53,14 +65,6 @@ template<class T>
 Node<T>* Node<T>::init(const T& key) {
     Node<T>*& p = new Node(key);
     return p;
-}
-
-template<class T>
-Node<T>::~Node() {
-    if (!_next)
-        return;
-    this->next()->~Node();
-    delete _next;
 }
 
 #endif
