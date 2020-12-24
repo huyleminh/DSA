@@ -1,64 +1,276 @@
+/**
+ *
+ * AVL.h
+ *
+ * Created by Huy Le Minh on 2020-12-24
+ *
+ * Visit my github: https://github.com/huyleminh/
+ * Contact me: leminhhuy.hcmus@gmail.com
+ *
+ *
+ * File description: Implement AVL (balance binary tree)
+*/
+
+
 #ifndef _AVL_H_
 #define _AVL_H_
 
-struct AVLNode
-{
-    int _key;
-    AVLNode* _left;
-    AVLNode* _right;
-    int _height;
-};
+#include "AVLNode.h"
+#include <iostream>
+using namespace std;
 
-AVLNode* createAVLNode(const int& key);
-
-class AVL
-{
+template<class T>
+class AVL {
+protected:
+    AVLNode<T>* _root;
 private:
-    AVLNode* _root;
+    void preOrderTraversal(AVLNode<T>* root);
+    void inOrderTraversal(AVLNode<T>* root);
+    void posOrderTraversal(AVLNode<T>* root);
+
+    AVLNode<T>* search(AVLNode<T>* root, const T& key);
+
+    void insert(AVLNode<T>*& root, const T& key);
+
+    void removeNode(AVLNode<T>*& root, const T& key);
+    AVLNode<T>* predecessor(AVLNode<T>* root); //Find the right most node of left subtree, root is the root of the left subtree
+
+    void rotateLeft(AVLNode<T>*& root);
+    void rotateRight(AVLNode<T>*& root);
+    void rotate(AVLNode<T>*& root);
+
+    void clear(AVLNode<T>*& root);
+
 public:
-    AVL();
-    ~AVL();
+    AVL() : _root(nullptr) {}
+    AVL(const T& key) {
+        _root = AVLNode<T>::init(key);
+    }
 
-    AVL(const int& key);
-    AVL(const AVL& tree);
+    void preOrderTraversal() {
+        this->preOrderTraversal(this->_root);
+    }
 
-    bool searchRecursive(const int& key);
-    bool searchIterative(const int& key);
+    void inOrderTraversal() {
+        this->inOrderTraversal(_root);
+    }
 
-    void insertRecursive(const int& key);
-    void insertIterative(const int& key);
+    void posOrderTraversal() {
+        this->posOrderTraversal(_root);
+    }
 
-    void removeNode(const int& key);
+    bool search(const T& key) {
+        return (this->search(_root, key)) ? true : false;
+    }
+    
+    void insert(const T& key) {
+        this->insert(_root, key);
+    }
 
-    void NLR();
-    void LNR();
-    void LRN();
-    void levelOrder();
+    void removeNode(const T& key) {
+        this->removeNode(_root, key);
+    }
 
-private: 
-    AVLNode* searchRecursive(AVLNode* root, const int& key);
-    AVLNode* searchIterative(AVLNode* root, const int& key);
+    void clear() {
+        this->clear(_root);
+    }
 
-    void insertRecursive(AVLNode*& root, const int& key);
-    void insertIterative(AVLNode*& root, const int& key);
-
-    void removeNode(AVLNode*& root, const int& key);
-
-    void rotateLeft(AVLNode*& root);
-    void rotateRight(AVLNode*& root);
-    void rotate(AVLNode*& root);
-
-    AVLNode* findPrecessor(AVLNode* root);
-    void removeTree(AVLNode*& root);
-
-    void fixHeightNode(AVLNode*& root);
-
-    int heightNode(AVLNode* root);
-
-    void NLR(AVLNode* root);
-    void LNR(AVLNode* root);
-    void LRN(AVLNode* root);
-    void levelOrder(AVLNode* root);
+    ~AVL() {
+        this->clear(_root);
+    }
 };
+
+//------------------------------------------------
+//private
+
+template<class T>
+void AVL<T>::preOrderTraversal(AVLNode<T>* root) {
+    if (!root)
+        return;
+    cout << "{ " << root->getKey() << ", " << root->getHeight() << " } ";
+    preOrderTraversal(root->left());
+    preOrderTraversal(root->right());
+}
+
+template<class T>
+void AVL<T>::inOrderTraversal(AVLNode<T>* root) {
+    if (!root)
+        return;
+    inOrderTraversal(root->left());
+    cout << "{ " << root->getKey() << ", " << root->getHeight() << " } ";
+    inOrderTraversal(root->right());
+}
+
+template<class T>
+void AVL<T>::posOrderTraversal(AVLNode<T>* root) {
+    if (!root)
+        return;
+    posOrderTraversal(root->left());
+    posOrderTraversal(root->right());
+    cout << "{ " << root->getKey() << ", " << root->getHeight() << " } ";
+}
+
+template<class T>
+AVLNode<T>* AVL<T>::search(AVLNode<T>* root, const T& key) {
+    if (!_root)
+        return nullptr;
+
+    AVLNode<T>* p = root;
+    while (p) {
+        if (p->getKey() == key)
+            return p;
+        p = (key < p->getKey()) ? p->left() : p->right();
+    }
+    return nullptr;
+}
+
+template<class T>
+void AVL<T>::insert(AVLNode<T>*& root, const T& key) {
+    if (!root) {
+        root = new AVLNode<T>(key);
+        return;
+    }
+    if (root->getKey() == key)
+        return;
+    else if (root->getKey() > key)
+        insert(root->left(), key);
+    else 
+        insert(root->right(), key);
+
+    if (!root)
+        return;
+    root->fixHeight();
+    rotate(root);
+}
+
+template<class T>
+void AVL<T>::removeNode(AVLNode<T>*& root, const T& key) {
+    if (!root)
+        return;
+    
+    if (root->getKey() > key)
+        removeNode(root->left(), key);
+    else if (root->getKey() < key)
+        removeNode(root->right(), key);
+    else {
+        if (!root->left() && !root->right()) {
+            delete root;
+            root = nullptr;
+        }
+        else if (!root->left() || !root->right()) {
+            AVLNode<T>* p = root;
+            root = (root->left()) ? root->left() : root->right();
+            delete p;
+        }
+        else if (root->left() && root->right()) {
+            AVLNode<T>* predecessorNode = this->predecessor(root->left());
+            root->setKey(predecessorNode->getKey());
+            removeNode(root->left(), predecessorNode->getKey());
+        }
+    }
+
+    if (!root)
+        return;
+    root->fixHeight();
+    rotate(root);
+}
+
+template<class T>
+AVLNode<T>* AVL<T>::predecessor(AVLNode<T>* root) {
+    if (!root)
+        return nullptr;
+    AVLNode<T>* p = root;
+    while (p->right())
+        p = p->right();
+    return p;
+}
+
+template<class T>
+void AVL<T>::rotateLeft(AVLNode<T>*& root) {
+    if (!root)
+        return;
+    AVLNode<T>* rright = root->right();
+
+    root->right() = rright->left();
+    root->fixHeight();
+
+    rright->left() = root;
+    root = rright;
+    root->fixHeight();
+}
+
+template<class T>
+void AVL<T>::rotateRight(AVLNode<T>*& root) {
+    if (!root)
+        return;
+    AVLNode<T>* rleft = root->left();
+
+    root->left() = rleft->right();
+    root->fixHeight();
+
+    rleft->right() = root;
+    root = rleft;
+    root->fixHeight();
+}
+
+template<class T>
+void AVL<T>::rotate(AVLNode<T>*& root) {
+    if (!root)
+        return;
+
+    int balance = 0; //Check left or right case
+    int sbalance = 0; //Continue from balance, check left-right or right-left
+    int lheight, rheight;
+    AVLNode<T>* leftNode = root->left();
+    AVLNode<T>* rightNode = root->right();
+
+    lheight = (!leftNode) ? 0 : leftNode->getHeight();
+    rheight = (!rightNode) ? 0 : rightNode->getHeight();
+    balance = lheight - rheight;
+
+    if (balance > 1) {
+        if (!leftNode) {
+            sbalance = 0;
+        }
+        else {
+            lheight = (!leftNode->left()) ? 0 : leftNode->left()->getHeight();
+            rheight = (!leftNode->right()) ? 0 : leftNode->left()->getHeight();
+            sbalance = lheight - rheight;
+        }
+
+        if (sbalance >= 0)
+            rotateRight(root);
+        else {
+            rotateLeft(root->right());
+            rotateRight(root);
+        }
+    }
+    else if (balance < -1) {
+        if (!rightNode) {
+            sbalance = 0;
+        }
+        else {
+            lheight = (!rightNode->left()) ? 0 : rightNode->left()->getHeight();
+            rheight = (!rightNode->right()) ? 0 : rightNode->right()->getHeight();
+            sbalance = rheight - lheight;
+        }
+
+        if (sbalance >= 0)
+            rotateLeft(root);
+        else {
+            rotateRight(root->left());
+            rotateLeft(root);
+        }
+    }
+}
+
+template<class T>
+void AVL<T>::clear(AVLNode<T>*& root) {
+    if (!root)
+        return;
+    clear(root->left());
+    clear(root->right());
+    delete root;
+}
 
 #endif
