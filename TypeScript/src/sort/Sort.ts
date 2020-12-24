@@ -1,3 +1,17 @@
+/**
+ *
+ * Sort.ts
+ *
+ * Created by Huy Le Minh on 2020-12-24
+ *
+ * Visit my github: https://github.com/huyleminh/
+ * Contact me: leminhhuy.hcmus@gmail.com
+ *
+ *
+ * File description: Implement Sort Algorithms
+*/
+
+
 function interchangeSort(arr: Array<number>): void {
     for (let i = 0; i < arr.length - 1; i++)
         for (let  j = i + 1; j < arr.length; j++)

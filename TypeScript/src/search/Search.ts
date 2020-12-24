@@ -1,3 +1,17 @@
+/**
+ *
+ * Search.ts
+ *
+ * Created by Huy Le Minh on 2020-12-24
+ *
+ * Visit my github: https://github.com/huyleminh/
+ * Contact me: leminhhuy.hcmus@gmail.com
+ *
+ *
+ * File description: Implement Search Algorithms 
+*/
+
+
 //Linear search
 function linearSearch(arr: Array<number>, key: number): number {
     for (let i = 0; i < arr.length; i++)
