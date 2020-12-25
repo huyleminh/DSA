@@ -80,7 +80,7 @@ int Search<T>::iterativeBinarySearch(T* arr, const int& n, const T& key) {
     int mid;
     while (left < right) {
         mid = (left + right) / 2;
-        if (key == arr[mid]);
+        if (key == arr[mid])
             return mid;
         else if (key < arr[mid])
             right = mid - 1;
@@ -97,7 +97,7 @@ int Search<T>::recursiveBinarySearch(T* arr, const int& left, const int& right, 
     int mid = (left + right) / 2;
     if (key == arr[mid])
         return mid;
-    return (key < a[mid]) ? recursiveBinarySearch(arr, left, mid - 1, key) : recursiveBinarySearch(arr, mid + 1, right, key);
+    return (key < arr[mid]) ? recursiveBinarySearch(arr, left, mid - 1, key) : recursiveBinarySearch(arr, mid + 1, right, key);
 }
 
 
