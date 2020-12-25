@@ -1,7 +1,7 @@
 ## DATA STRUCTURE AND ALGORITHMS - TYPESCRIPT
 
 ## Overview
-This is a part of DSA poject, is written with [typescript](https://www.typescriptlang.org/)
+This is a part of DSA project, is written with [typescript](https://www.typescriptlang.org/)
 
 ## Install
 
