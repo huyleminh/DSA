@@ -211,7 +211,7 @@ void Sort<T>::insertionSort(T* arr, const int& n) {
     for (int i = 1; i < n; ++i) {
         checkVal = arr[i];
         j = i - 1;
-        while (j > -1) {
+        while (j > -1 && arr[j] > checkVal) {
             arr[j + 1] = arr[j];
             --j;
         }
