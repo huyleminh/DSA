@@ -144,7 +144,7 @@ void Sort<T>::sortRadixByStep(T* arr, const int& n, const int& step) {
     //Combine number to array
     int index = 0;
     for (int i = 0; i < 10; ++i) {
-        for (int j = 0; j < counts[j]; ++j)
+        for (int j = 0; j < counts[i]; ++j)
             arr[index++] = bins[i][j];
         counts[i] = 0;
         delete bins[i];
