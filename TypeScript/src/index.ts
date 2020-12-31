@@ -8,5 +8,5 @@ import Stack from "./stack/Stack"
 // console.log(arr);
 
 
-let st = new Stack<number[]>();
-st.push([1], [2], [3, 4, 5]);
+// let st = new Stack<number[]>();
+// st.push([1], [2], [3, 4, 5]);
